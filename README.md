@@ -10,6 +10,7 @@ Its goal is to become the [AUTOMATIC1111/stable-diffusion-webui](https://github.
 
 ## Features
 
+
 * 3 interface modes: default, notebook, and chat
 * Multiple model backends: transformers, llama.cpp, ExLlama, AutoGPTQ, GPTQ-for-LLaMa
 * Dropdown menu for quickly switching between different models
