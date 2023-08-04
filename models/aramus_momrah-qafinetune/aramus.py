@@ -8,11 +8,11 @@ class AramusModel(object):
         print("request,question:", question, "state:", state)
 
         # send url
-        url = 'http://37.224.68.132:23941/momrah_gpt/visual_pollution_qa'
+        url = 'http://37.224.68.132:24334/QApairs'
         headers = {
             'Content-Type': 'application/json',
         }
-        data = {'question': question}
+        data = {'pairs': question}
 
         try:
             response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -24,7 +24,6 @@ class AramusModel(object):
                 output = response.json()
                 answer = output['answer']
                 return answer
-            else: return 'system error'
 
         except Exception as e:
             print("post request error ：{0}".format(e))
@@ -34,7 +33,7 @@ class AramusModel(object):
 # # test
 # model = AramusModel()
 #
-# # send question demo
+# # # send question demo
 # question = "May Public toilets cause visual pollution?"
 # state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
 # result = model.generate(question, state)
