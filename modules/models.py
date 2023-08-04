@@ -21,6 +21,8 @@ import modules.shared as shared
 from modules import llama_attn_hijack, sampler_hijack
 from modules.logging_colors import logger
 from modules.models_settings import infer_loader
+import importlib
+import sys
 
 transformers.logging.set_verbosity_error()
 
@@ -96,7 +98,9 @@ def load_model(model_name, loader=None):
 def load_tokenizer(model_name, model):
     tokenizer = None
     path_to_model = Path(f"{shared.args.model_dir}/{model_name}/")
-    if any(s in model_name.lower() for s in ['gpt-4chan', 'gpt4chan']) and Path(f"{shared.args.model_dir}/gpt-j-6B/").exists():
+    if 'aramus' in model_name.lower():
+        pass
+    elif any(s in model_name.lower() for s in ['gpt-4chan', 'gpt4chan']) and Path(f"{shared.args.model_dir}/gpt-j-6B/").exists():
         tokenizer = AutoTokenizer.from_pretrained(Path(f"{shared.args.model_dir}/gpt-j-6B/"))
     elif path_to_model.exists():
         try:
@@ -133,89 +137,98 @@ def load_tokenizer(model_name, model):
 
 def huggingface_loader(model_name):
     path_to_model = Path(f'{shared.args.model_dir}/{model_name}')
-    if 'chatglm' in model_name.lower():
-        LoaderClass = AutoModel
+    # add aramus model loading fuction
+    if 'aramus' in model_name.lower():
+        importlib.invalidate_caches()
+        model_real_path=os.path.dirname(__file__)+"/../"+shared.args.model_dir+"/"+model_name
+        sys.path.insert(0, model_real_path)
+        ModelClass = importlib.import_module(model_name.replace("-","_"))
+        model = ModelClass.AramusModel()
+        sys.path.remove(model_real_path)
     else:
-        config = AutoConfig.from_pretrained(path_to_model, trust_remote_code=shared.args.trust_remote_code)
-        if config.to_dict().get("is_encoder_decoder", False):
-            LoaderClass = AutoModelForSeq2SeqLM
-            shared.is_seq2seq = True
+        if 'chatglm' in model_name.lower():
+            LoaderClass = AutoModel
         else:
-            LoaderClass = AutoModelForCausalLM
-
-    # Load the model in simple 16-bit mode by default
-    if not any([shared.args.cpu, shared.args.load_in_8bit, shared.args.load_in_4bit, shared.args.auto_devices, shared.args.disk, shared.args.deepspeed, shared.args.gpu_memory is not None, shared.args.cpu_memory is not None]):
-        model = LoaderClass.from_pretrained(Path(f"{shared.args.model_dir}/{model_name}"), low_cpu_mem_usage=True, torch_dtype=torch.bfloat16 if shared.args.bf16 else torch.float16, trust_remote_code=shared.args.trust_remote_code)
-        if torch.backends.mps.is_available():
-            device = torch.device('mps')
-            model = model.to(device)
-        else:
-            model = model.cuda()
-
-    # DeepSpeed ZeRO-3
-    elif shared.args.deepspeed:
-        model = LoaderClass.from_pretrained(Path(f"{shared.args.model_dir}/{model_name}"), torch_dtype=torch.bfloat16 if shared.args.bf16 else torch.float16)
-        model = deepspeed.initialize(model=model, config_params=ds_config, model_parameters=None, optimizer=None, lr_scheduler=None)[0]
-        model.module.eval()  # Inference
-        logger.info(f"DeepSpeed ZeRO-3 is enabled: {is_deepspeed_zero3_enabled()}")
-
-    # Custom
-    else:
-        params = {
-            "low_cpu_mem_usage": True,
-            "trust_remote_code": shared.args.trust_remote_code
-        }
-
-        if not any((shared.args.cpu, torch.cuda.is_available(), torch.backends.mps.is_available())):
-            logger.warning("torch.cuda.is_available() returned False. This means that no GPU has been detected. Falling back to CPU mode.")
-            shared.args.cpu = True
-
-        if shared.args.cpu:
-            params["torch_dtype"] = torch.float32
-        else:
-            params["device_map"] = 'auto'
-            if shared.args.load_in_4bit:
-
-                # See https://github.com/huggingface/transformers/pull/23479/files
-                # and https://huggingface.co/blog/4bit-transformers-bitsandbytes
-                quantization_config_params = {
-                    'load_in_4bit': True,
-                    'bnb_4bit_compute_dtype': eval("torch.{}".format(shared.args.compute_dtype)) if shared.args.compute_dtype in ["bfloat16", "float16", "float32"] else None,
-                    'bnb_4bit_quant_type': shared.args.quant_type,
-                    'bnb_4bit_use_double_quant': shared.args.use_double_quant,
-                }
-
-                logger.warning("Using the following 4-bit params: " + str(quantization_config_params))
-                params['quantization_config'] = BitsAndBytesConfig(**quantization_config_params)
-
-            elif shared.args.load_in_8bit and any((shared.args.auto_devices, shared.args.gpu_memory)):
-                params['quantization_config'] = BitsAndBytesConfig(load_in_8bit=True, llm_int8_enable_fp32_cpu_offload=True)
-            elif shared.args.load_in_8bit:
-                params['quantization_config'] = BitsAndBytesConfig(load_in_8bit=True)
-            elif shared.args.bf16:
-                params["torch_dtype"] = torch.bfloat16
+            config = AutoConfig.from_pretrained(path_to_model, trust_remote_code=shared.args.trust_remote_code)
+            if config.to_dict().get("is_encoder_decoder", False):
+                LoaderClass = AutoModelForSeq2SeqLM
+                shared.is_seq2seq = True
             else:
-                params["torch_dtype"] = torch.float16
+                LoaderClass = AutoModelForCausalLM
 
-            params['max_memory'] = get_max_memory_dict()
-            if shared.args.disk:
-                params["offload_folder"] = shared.args.disk_cache_dir
+        # Load the model in simple 16-bit mode by default
+        if not any([shared.args.cpu, shared.args.load_in_8bit, shared.args.load_in_4bit, shared.args.auto_devices, shared.args.disk, shared.args.deepspeed, shared.args.gpu_memory is not None, shared.args.cpu_memory is not None]):
+            model = LoaderClass.from_pretrained(Path(f"{shared.args.model_dir}/{model_name}"), low_cpu_mem_usage=True, torch_dtype=torch.bfloat16 if shared.args.bf16 else torch.float16, trust_remote_code=shared.args.trust_remote_code)
+            if torch.backends.mps.is_available():
+                device = torch.device('mps')
+                model = model.to(device)
+            else:
+                model = model.cuda()
 
-        checkpoint = Path(f'{shared.args.model_dir}/{model_name}')
-        if shared.args.load_in_8bit and params.get('max_memory', None) is not None and params['device_map'] == 'auto':
-            config = AutoConfig.from_pretrained(checkpoint, trust_remote_code=shared.args.trust_remote_code)
-            with init_empty_weights():
-                model = LoaderClass.from_config(config, trust_remote_code=shared.args.trust_remote_code)
+        # DeepSpeed ZeRO-3
+        elif shared.args.deepspeed:
+            model = LoaderClass.from_pretrained(Path(f"{shared.args.model_dir}/{model_name}"), torch_dtype=torch.bfloat16 if shared.args.bf16 else torch.float16)
+            model = deepspeed.initialize(model=model, config_params=ds_config, model_parameters=None, optimizer=None, lr_scheduler=None)[0]
+            model.module.eval()  # Inference
+            logger.info(f"DeepSpeed ZeRO-3 is enabled: {is_deepspeed_zero3_enabled()}")
 
-            model.tie_weights()
-            params['device_map'] = infer_auto_device_map(
-                model,
-                dtype=torch.int8,
-                max_memory=params['max_memory'],
-                no_split_module_classes=model._no_split_modules
-            )
+        # Custom
+        else:
+            params = {
+                "low_cpu_mem_usage": True,
+                "trust_remote_code": shared.args.trust_remote_code
+            }
 
-        model = LoaderClass.from_pretrained(checkpoint, **params)
+            if not any((shared.args.cpu, torch.cuda.is_available(), torch.backends.mps.is_available())):
+                logger.warning("torch.cuda.is_available() returned False. This means that no GPU has been detected. Falling back to CPU mode.")
+                shared.args.cpu = True
+
+            if shared.args.cpu:
+                params["torch_dtype"] = torch.float32
+            else:
+                params["device_map"] = 'auto'
+                if shared.args.load_in_4bit:
+
+                    # See https://github.com/huggingface/transformers/pull/23479/files
+                    # and https://huggingface.co/blog/4bit-transformers-bitsandbytes
+                    quantization_config_params = {
+                        'load_in_4bit': True,
+                        'bnb_4bit_compute_dtype': eval("torch.{}".format(shared.args.compute_dtype)) if shared.args.compute_dtype in ["bfloat16", "float16", "float32"] else None,
+                        'bnb_4bit_quant_type': shared.args.quant_type,
+                        'bnb_4bit_use_double_quant': shared.args.use_double_quant,
+                    }
+
+                    logger.warning("Using the following 4-bit params: " + str(quantization_config_params))
+                    params['quantization_config'] = BitsAndBytesConfig(**quantization_config_params)
+
+                elif shared.args.load_in_8bit and any((shared.args.auto_devices, shared.args.gpu_memory)):
+                    params['quantization_config'] = BitsAndBytesConfig(load_in_8bit=True, llm_int8_enable_fp32_cpu_offload=True)
+                elif shared.args.load_in_8bit:
+                    params['quantization_config'] = BitsAndBytesConfig(load_in_8bit=True)
+                elif shared.args.bf16:
+                    params["torch_dtype"] = torch.bfloat16
+                else:
+                    params["torch_dtype"] = torch.float16
+
+                params['max_memory'] = get_max_memory_dict()
+                if shared.args.disk:
+                    params["offload_folder"] = shared.args.disk_cache_dir
+
+            checkpoint = Path(f'{shared.args.model_dir}/{model_name}')
+            if shared.args.load_in_8bit and params.get('max_memory', None) is not None and params['device_map'] == 'auto':
+                config = AutoConfig.from_pretrained(checkpoint, trust_remote_code=shared.args.trust_remote_code)
+                with init_empty_weights():
+                    model = LoaderClass.from_config(config, trust_remote_code=shared.args.trust_remote_code)
+
+                model.tie_weights()
+                params['device_map'] = infer_auto_device_map(
+                    model,
+                    dtype=torch.int8,
+                    max_memory=params['max_memory'],
+                    no_split_module_classes=model._no_split_modules
+                )
+
+            model = LoaderClass.from_pretrained(checkpoint, **params)
 
     return model
 
