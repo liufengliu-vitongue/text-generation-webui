@@ -2,17 +2,23 @@ import json
 
 import requests
 
-
 class AramusModel(object):
     def generate(self, question, state):
-        print("request,question:", question, "state:", state)
+        word = "\nYou: "
+
+        last_index = question.rfind(word)
+        new_str = question[last_index: -1]
+        new_question = new_str.split(word)[1]
+
+        print("request,question:", new_question, "state:", state)
 
         # send url
         url = 'http://192.168.0.16:3334/QApairs'
+        #url = "http://37.224.68.132:24334/QApairs"
         headers = {
             'Content-Type': 'application/json',
         }
-        data = {'pairs': question}
+        data = {'pairs': new_question}
 
         try:
             response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -23,6 +29,7 @@ class AramusModel(object):
                 # 解析响应数据
                 output = response.json()
                 answer = output['answer']
+                print("qafinetune http status code:", response.status_code)
                 return answer
 
         except Exception as e:
@@ -32,9 +39,9 @@ class AramusModel(object):
 
 # # test
 # model = AramusModel()
-#
-# # # send question demo
-# question = "May Public toilets cause visual pollution?"
-# state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
-# result = model.generate(question, state)
-# print(result)
+# #
+# # # # send question demo
+# question = "\nYou: May Public toilets cause visual pollution?"
+# #state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
+# #result = model.generate(question, state)
+# #print(result)

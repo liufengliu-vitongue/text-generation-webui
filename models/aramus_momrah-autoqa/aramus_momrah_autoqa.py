@@ -5,24 +5,32 @@ import requests
 
 class AramusModel(object):
     def generate(self, question, state):
-        print("request,question:", question, "state:", state)
+        word = "\nYou: "
+
+        last_index = question.rfind(word)
+        new_str = question[last_index: -1]
+        new_question = new_str.split(word)[1]
+        print("request,question:", new_question, "state:", state)
 
         # send url
         url = 'http://192.168.0.48:3941/momrah_gpt/visual_pollution_qa'
+
+        #url = 'http://37.224.68.132:23941/momrah_gpt/visual_pollution_qa'
         headers = {
             'Content-Type': 'application/json',
         }
-        data = {'question': question}
+        data = {'question': new_question}
 
         try:
             response = requests.post(url, headers=headers, data=json.dumps(data))
-            print("http status code:", response.status_code)
-            print("http response:", response.content.decode('utf-8'))
+            print("autoqa http status code:", response.status_code)
 
             if response.status_code == 200:
                 # 解析响应数据
                 output = response.json()
                 answer = output['answer']
+
+                print("autoqa http answer:", answer)
                 return answer
             else: return 'system error'
 
@@ -33,9 +41,9 @@ class AramusModel(object):
 
 # # test
 # model = AramusModel()
-#
-# # send question demo
-# question = "May Public toilets cause visual pollution?"
+# #
+# # # send question demo
+# question = "\nYou: May Public toilets cause visual pollution?"
 # state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
 # result = model.generate(question, state)
 # print(result)
