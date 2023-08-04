@@ -8,7 +8,7 @@ class AramusModel(object):
         print("request,question:", question, "state:", state)
 
         # send url
-        url = 'http://37.224.68.132:23941/momrah_gpt/visual_pollution_qa'
+        url = 'http://192.168.0.48:3941/momrah_gpt/visual_pollution_qa'
         headers = {
             'Content-Type': 'application/json',
         }

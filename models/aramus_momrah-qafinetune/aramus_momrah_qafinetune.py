@@ -8,7 +8,7 @@ class AramusModel(object):
         print("request,question:", question, "state:", state)
 
         # send url
-        url = 'http://37.224.68.132:24334/QApairs'
+        url = 'http://192.168.0.16:3334/QApairs'
         headers = {
             'Content-Type': 'application/json',
         }
