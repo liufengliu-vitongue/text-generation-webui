@@ -2,20 +2,19 @@ import json
 
 import requests
 
-
 class AramusModel(object):
     def generate(self, question, state):
         word = "\nYou: "
         word_bot = "\nAramus:"
 
-        print("org request question:", question)
-
         last_index = question.rfind(word)
-        new_str = question[last_index: -1]
+        new_str = question[last_index:]
+        print("new_str:",new_str)
         new_question_bot = new_str.split(word)[1]
 
-        bot_index = new_question_bot.rfind(word_bot)
-        new_question = new_question_bot[0: bot_index]
+        new_question = new_question_bot
+        if new_question_bot.__contains__(word_bot):
+            new_question = new_question_bot.replace(word_bot,"")
 
         print("request,question:", new_question)
 

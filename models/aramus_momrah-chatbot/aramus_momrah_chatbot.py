@@ -8,11 +8,14 @@ class AramusModel(object):
         word_bot = "\nAramus:"
 
         last_index = question.rfind(word)
-        new_str = question[last_index: -1]
+        new_str = question[last_index:]
+        print("new_str:",new_str)
         new_question_bot = new_str.split(word)[1]
 
-        bot_index = new_question_bot.rfind(word_bot)
-        new_question = new_question_bot[0: bot_index]
+        new_question = new_question_bot
+        if new_question_bot.__contains__(word_bot):
+            new_question = new_question_bot.replace(word_bot,"")
+
 
         print("request,question:", new_question)
 
@@ -46,8 +49,7 @@ class AramusModel(object):
 model = AramusModel()
 # # #
 # # # # # send question demo
-question = "\nYou: Can you detail the challenges and root causes that lead to buildings becoming abandoned," \
-           " and hence contributing to visual pollution?  \nAramus:"
+question = " failing to do so could also help in promoting the use of covers.\nYou: Can you detail the challenges and root causes that lead to buildings becoming abandoned, and hence contributing to visual pollution?\nAramus:"
 state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
 result = model.generate(question, state)
 print(result)
