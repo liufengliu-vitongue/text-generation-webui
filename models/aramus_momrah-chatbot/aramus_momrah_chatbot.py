@@ -46,10 +46,10 @@ class AramusModel(object):
             return "Sorry, the feature is not supported at the moment"
 
 # # test
-model = AramusModel()
-# # #
-# # # # # send question demo
-question = " failing to do so could also help in promoting the use of covers.\nYou: Can you detail the challenges and root causes that lead to buildings becoming abandoned, and hence contributing to visual pollution?\nAramus:"
-state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
-result = model.generate(question, state)
-print(result)
+# model = AramusModel()
+# # # #
+# # # # # # send question demo
+# question = " failing to do so could also help in promoting the use of covers.\nYou: Can you detail the challenges and root causes that lead to buildings becoming abandoned, and hence contributing to visual pollution?\nAramus:"
+# state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
+# result = model.generate(question, state)
+# print(result)
