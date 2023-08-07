@@ -17,8 +17,8 @@ class AramusModel(object):
         print("request,question:", new_question)
 
         # send url
-        #url = 'http://192.168.0.16:3037/chatbot'
-        url = "http://37.224.68.132:24037/chatbot"
+        url = 'http://192.168.0.16:3037/chatbot'
+        #url = "http://37.224.68.132:24037/chatbot"
         headers = {
             'Content-Type': 'application/json',
         }
