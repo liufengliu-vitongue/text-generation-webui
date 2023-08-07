@@ -6,6 +6,7 @@ fastapi==0.95.2
 gradio_client==0.2.5
 gradio==3.33.1
 markdown
+langdetect
 numpy
 pandas
 Pillow>=9.5.0

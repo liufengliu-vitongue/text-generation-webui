@@ -1,11 +1,12 @@
 import json
 
 import requests
+from langdetect import detect
 
 class AramusModel(object):
     def generate(self, question, state):
         word = "\nYou:"
-        word_bot = "\nAramus"
+        word_bot = "\nAramus:"
 
         print("org request question:", question)
 
@@ -18,13 +19,31 @@ class AramusModel(object):
 
         print("request,question:", new_question)
 
+        from langdetect import DetectorFactory
+        DetectorFactory.seed = 0
+
+        source_lang = detect(new_question)
+        source_language = "eng_Latn"
+        target_language = "arb_Arab"
+
+        if source_lang == "ar":
+            source_language = "arb_Arab"
+            target_language = "eng_Latn"
+
+        # 判断语言种类
+        print(detect(new_question))
+
+        print("request,question:", new_question, "state:", state)
+
         # send url
-        #url = 'http://192.168.0.16:3334/QApairs'
-        url = "http://37.224.68.132:24334/QApairs"
+        url = 'http://192.168.0.16:3004/translate/NLLB'
+        #url = 'http://37.224.68.132:24004/translate/NLLB'
         headers = {
             'Content-Type': 'application/json',
         }
-        data = {'pairs': new_question}
+
+
+        data = {'ori_text': new_question,"source_language":source_language,"target_language":target_language}
 
         try:
             response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -34,7 +53,7 @@ class AramusModel(object):
             if response.status_code == 200:
                 # 解析响应数据
                 output = response.json()
-                answer = output['answer']
+                answer = output['response']
                 print("qafinetune http status code:", response.status_code)
                 return answer
 

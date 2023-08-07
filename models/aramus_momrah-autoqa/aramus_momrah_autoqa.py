@@ -6,11 +6,18 @@ import requests
 class AramusModel(object):
     def generate(self, question, state):
         word = "\nYou: "
+        word_bot = "\nAramus:"
+
+        print("org request question:", question)
 
         last_index = question.rfind(word)
         new_str = question[last_index: -1]
-        new_question = new_str.split(word)[1]
-        print("request,question:", new_question, "state:", state)
+        new_question_bot = new_str.split(word)[1]
+
+        bot_index = new_question_bot.rfind(word_bot)
+        new_question = new_question_bot[0: bot_index]
+
+        print("request,question:", new_question)
 
         # send url
         url = 'http://192.168.0.48:3941/momrah_gpt/visual_pollution_qa'

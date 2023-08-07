@@ -5,7 +5,7 @@ import requests
 class AramusModel(object):
     def generate(self, question, state):
         word = "\nYou:"
-        word_bot = "\nAramus"
+        word_bot = "\nAramus:"
 
         print("org request question:", question)
 
@@ -19,15 +19,13 @@ class AramusModel(object):
         print("request,question:", new_question)
 
         # send url
-        #url = 'http://192.168.0.16:3334/QApairs'
-        url = "http://37.224.68.132:24334/QApairs"
-        headers = {
-            'Content-Type': 'application/json',
-        }
-        data = {'pairs': new_question}
+        url = 'http://192.168.0.111:3000/api/query'
+        #url = 'http://37.224.68.132:24007/api/query'
+
+        data = {'query': new_question}
 
         try:
-            response = requests.post(url, headers=headers, data=json.dumps(data))
+            response = requests.post(url, data=data, timeout=(30, 60))
             print("http status code:", response.status_code)
             print("http response:", response.content.decode('utf-8'))
 
@@ -45,9 +43,9 @@ class AramusModel(object):
 
 # # test
 # model = AramusModel()
-# # #
-# # # # # send question demo
-# question = "\nYou: May Public toilets cause visual pollution?"
+# # # #
+# # # # # # send question demo
+# question = "\nYou: May Public toilets cause visual pollution? \nAramus: "
 # state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
 # result = model.generate(question, state)
 # print(result)
