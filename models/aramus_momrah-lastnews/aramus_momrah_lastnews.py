@@ -49,7 +49,7 @@ class AramusModel(object):
 # model = AramusModel()
 # # # # #
 # # # # # # # send question demo
-# question = "\nYou: May Public toilets cause visual pollution? \nAramus: "
+# question = "\nYou: May Public toilets cause visual pollution? \nAramus:"
 # state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
 # result = model.generate(question, state)
 # print(result)
