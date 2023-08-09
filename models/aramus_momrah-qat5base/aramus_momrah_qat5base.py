@@ -1,22 +1,21 @@
 import json
 import requests
 
+from models.aramus_question import Aramus_question
+
+
 class AramusModel(object):
     def generate(self, question, state):
 
-        word = "\nYou: "
-        word_bot = "\nAramus:"
+        new_question = Aramus_question.new_question(question,state)
 
-        last_index = question.rfind(word)
-        new_str = question[last_index:]
-        print("new_str:",new_str)
-        new_question_bot = new_str.split(word)[1]
+        if len(new_question.strip()) == 0:
+            greeting = state["greeting"]
+            if len(greeting.strip()) == 0:
+                greeting = "Please enter some content, so I can know what you want to know"
+            return greeting
 
-        new_question = new_question_bot
-        if new_question_bot.__contains__(word_bot):
-            new_question = new_question_bot.replace(word_bot, "")
-
-        print("request,question:", new_question)
+        print("qat5base new question:", new_question)
         # send url
         url = 'http://192.168.0.111:3588/predict'
         #url = "http://37.224.68.132:25588/predict"
@@ -34,7 +33,7 @@ class AramusModel(object):
                 # 解析响应数据
                 output = response.json()
                 answer = output['Answer']
-                print("qafinetune http status code:", response.status_code)
+                print("qat5base http status code:", response.status_code)
                 return answer
 
         except Exception as e:

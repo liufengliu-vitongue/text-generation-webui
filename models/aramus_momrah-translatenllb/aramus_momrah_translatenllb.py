@@ -3,19 +3,18 @@ import json
 import requests
 from langdetect import detect
 
+from models.aramus_question import Aramus_question
+
+
 class AramusModel(object):
     def generate(self, question, state):
-        word = "\nYou: "
-        word_bot = "\nAramus:"
+        new_question = Aramus_question.new_question(question,state)
 
-        last_index = question.rfind(word)
-        new_str = question[last_index:]
-        print("new_str:",new_str)
-        new_question_bot = new_str.split(word)[1]
-
-        new_question = new_question_bot
-        if new_question_bot.__contains__(word_bot):
-            new_question = new_question_bot.replace(word_bot, "")
+        if len(new_question.strip()) == 0:
+            greeting = state["greeting"]
+            if len(greeting.strip()) == 0:
+                greeting = "Please submit the text you wish to have translated"
+            return greeting
 
         print("request,question:", new_question)
 
