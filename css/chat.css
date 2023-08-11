@@ -67,6 +67,7 @@ div.svelte-362y77>*, div.svelte-362y77>.form>* {
     height: calc(100vh - 286px);
     overflow-y: auto;
     padding-right: 20px;
+    padding-left: 20px;
     display: flex;
     flex-direction: column-reverse;
     word-break: break-word;
@@ -76,7 +77,7 @@ div.svelte-362y77>*, div.svelte-362y77>.form>* {
     border-width: var(--block-border-width);
     border-color: var(--block-border-color);
     border-radius: var(--block-radius);
-    background: var(--input-background-fill);
+    background: var(--block-background-fill);
 }
 
 .message-body li {
