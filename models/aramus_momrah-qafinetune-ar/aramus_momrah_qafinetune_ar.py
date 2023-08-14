@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from models.gpt_question import Aramus_question
+from modules.aramus_question import Aramus_question
 
 
 
