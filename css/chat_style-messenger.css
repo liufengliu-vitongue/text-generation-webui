@@ -8,14 +8,14 @@
 .circle-you {
     width: 40px;
     height: 40px;
-    background-color: #cccccc;
+    background-color: #eab308;
     border-radius: 50%;
 }
 
 .circle-bot {
     width: 40px;
     height: 40px;
-    background-color: #eab308;
+    background-color:  #cccccc;
     border-radius: 50%;
     float: left;
     margin-right: 10px;
@@ -41,13 +41,13 @@
 }
 
 .circle-bot + .text {
-    background-color: #ebc13f;
+    background-color:  #e5e7eb;
     float: left;
 }
 
 .circle-you + .text {
     float: right;
-    background-color: #e5e7eb;
+    background-color: #ebc13f;
     margin-right: 10px;
 }
 
