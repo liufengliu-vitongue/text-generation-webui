@@ -6,16 +6,16 @@
 }
 
 .circle-you {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(238, 78, 59);
+    width: 40px;
+    height: 40px;
+    background-color: #cccccc;
     border-radius: 50%;
 }
 
 .circle-bot {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(59, 78, 244);
+    width: 40px;
+    height: 40px;
+    background-color: #eab308;
     border-radius: 50%;
     float: left;
     margin-right: 10px;
@@ -41,13 +41,13 @@
 }
 
 .circle-bot + .text {
-    background-color: #E4E6EB;
+    background-color: #ebc13f;
     float: left;
 }
 
 .circle-you + .text {
     float: right;
-    background-color: rgb(0, 132, 255);
+    background-color: #e5e7eb;
     margin-right: 10px;
 }
 

@@ -7,17 +7,21 @@
     line-height: 1.428571429;
 }
 
+.text {
+    max-width: 80%;
+}
+
 .circle-you {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(238, 78, 59);
+    width: 40px;
+    height: 40px;
+    background-color: #cccccc;
     border-radius: 50%;
 }
 
 .circle-bot {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(59, 78, 244);
+    width: 40px;
+    height: 40px;
+    background-color: #eab308;
     border-radius: 50%;
 }
 
