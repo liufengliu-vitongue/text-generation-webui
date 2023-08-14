@@ -1,14 +1,10 @@
-import json
-
 import requests
 
 from models.gpt_question import Aramus_question
 
 
-
 class AramusModel(object):
     def generate(self, question, state):
-
         new_question = Aramus_question.new_question(question,state)
 
         if len(new_question.strip()) == 0:
@@ -17,18 +13,19 @@ class AramusModel(object):
                 greeting = "Please enter some content, so I can know what you want to know"
             return greeting
 
-        print("qafinetune new question:", new_question)
+        print("request,question:", new_question)
+
+        new_question_en = Aramus_question.translate_language(new_question, "ar")
+
 
         # send url
-        url = 'http://192.168.0.16:3334/QApairs'
-        #url = "http://37.224.68.132:24334/QApairs"
-        headers = {
-            'Content-Type': 'application/json',
-        }
-        data = {'pairs': new_question}
+        url = 'http://192.168.0.111:3000/api/query'
+        #url = 'http://37.224.68.132:24007/api/query'
+
+        data = {'query': new_question_en}
 
         try:
-            response = requests.post(url, headers=headers, data=json.dumps(data))
+            response = requests.post(url, data=data, timeout=(30, 60))
             print("http status code:", response.status_code)
             print("http response:", response.content.decode('utf-8'))
 
@@ -36,8 +33,10 @@ class AramusModel(object):
                 # 解析响应数据
                 output = response.json()
                 answer = output['answer']
-                print("qafinetune http status code:", response.status_code)
-                return answer
+                answer_ar = Aramus_question.translate_language(answer, "en")
+
+                print("incontextgpt_ar http answer:", answer_ar)
+                return answer_ar
 
         except Exception as e:
             print("post request error ：{0}".format(e))
@@ -46,9 +45,9 @@ class AramusModel(object):
 
 # # test
 # model = AramusModel()
-# # #
-# # # # # send question demo
-# question = "\nYou: May Public toilets cause visual pollution?"
+# # # #
+# # # # # # send question demo
+# question = "\nYou: May Public toilets cause visual pollution? \nAramus: "
 # state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
 # result = model.generate(question, state)
 # print(result)

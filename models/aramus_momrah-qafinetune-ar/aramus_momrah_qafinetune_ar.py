@@ -19,13 +19,15 @@ class AramusModel(object):
 
         print("qafinetune new question:", new_question)
 
+        new_question_en = Aramus_question.translate_language(new_question, "ar")
+
         # send url
         url = 'http://192.168.0.16:3334/QApairs'
         #url = "http://37.224.68.132:24334/QApairs"
         headers = {
             'Content-Type': 'application/json',
         }
-        data = {'pairs': new_question}
+        data = {'pairs': new_question_en}
 
         try:
             response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -36,8 +38,9 @@ class AramusModel(object):
                 # 解析响应数据
                 output = response.json()
                 answer = output['answer']
-                print("qafinetune http status code:", response.status_code)
-                return answer
+                answer_ar = Aramus_question.translate_language(answer, "en")
+                print("qafinetune-ar answer:", answer_ar)
+                return answer_ar
 
         except Exception as e:
             print("post request error ：{0}".format(e))

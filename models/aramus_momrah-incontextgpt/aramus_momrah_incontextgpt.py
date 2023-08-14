@@ -1,6 +1,6 @@
 import requests
 
-from models.aramus_question import Aramus_question
+from models.gpt_question import Aramus_question
 
 
 class AramusModel(object):

@@ -3,7 +3,7 @@ import json
 import requests
 from langdetect import detect
 
-from models.aramus_question import Aramus_question
+from models.gpt_question import Aramus_question
 
 
 class AramusModel(object):
@@ -35,8 +35,9 @@ class AramusModel(object):
         print("request,question:", new_question, "state:", state)
 
         # send url
-        url = 'http://192.168.0.16:3004/translate/NLLB'
-        #url = 'http://37.224.68.132:24004/translate/NLLB'
+        url = 'http://192.168.0.175:3030/translate/NLLB'
+        #old url = 'http://37.224.68.132:24004/translate/NLLB'
+        #url = "http://37.224.68.132:26030/translate/NLLB
         headers = {
             'Content-Type': 'application/json',
         }
@@ -61,11 +62,3 @@ class AramusModel(object):
             # 处理请求异常，返回空字符串或其他错误信息
             return "Sorry, the feature is not supported at the moment"
 
-# # test
-# model = AramusModel()
-# # #
-# # # # # send question demo
-# question = "\nYou: May Public toilets cause visual pollution?"
-# state = {"temperature": 0.8, "top_p": 0.9, "top_k": 500, "repetition_penalty": 1.2, "ban_eos_token": False}
-# result = model.generate(question, state)
-# print(result)
