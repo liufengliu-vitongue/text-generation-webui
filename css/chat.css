@@ -67,11 +67,17 @@ div.svelte-362y77>*, div.svelte-362y77>.form>* {
     height: calc(100vh - 286px);
     overflow-y: auto;
     padding-right: 20px;
+    padding-left: 20px;
     display: flex;
     flex-direction: column-reverse;
     word-break: break-word;
     overflow-wrap: anywhere;
     padding-top: 1px;
+    box-shadow: var(--block-shadow);
+    border-width: var(--block-border-width);
+    border-color: var(--block-border-color);
+    border-radius: var(--block-radius);
+    background: var(--block-background-fill);
 }
 
 .message-body li {

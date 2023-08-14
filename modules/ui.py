@@ -22,14 +22,42 @@ refresh_symbol = '🔄'
 delete_symbol = '🗑️'
 save_symbol = '💾'
 
-theme = gr.themes.Default(
+theme = gr.themes.Base(
+    primary_hue="yellow",
+    secondary_hue="yellow",
+    neutral_hue="slate",
     font=['Helvetica', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     font_mono=['IBM Plex Mono', 'ui-monospace', 'Consolas', 'monospace'],
 ).set(
-    border_color_primary='#c5c5d2',
-    button_large_padding='6px 12px',
-    body_text_color_subdued='#484848',
-    background_fill_secondary='#eaeaea'
+    body_background_fill='#f9f7f2',
+    body_text_color_subdued='#1d1f22',
+    background_fill_primary='#f3efe5',
+    background_fill_secondary='#f3efe5',
+    button_border_width='1px',
+    button_large_padding='14px',
+    button_large_radius='24px',
+    button_small_padding='10px',
+    button_small_radius='20px',
+    button_primary_background_fill='#b89535',
+    button_primary_background_fill_hover='#ebc03f',
+    button_primary_border_color='#7e6216',
+    button_primary_border_color_hover='#ebc03f',
+    button_primary_text_color='#ffffff',
+    button_secondary_background_fill='#ffffff',
+    button_secondary_background_fill_hover='#ebc03f',
+    button_secondary_border_color='#eeeeee',
+    button_secondary_border_color_hover='#ebc03f',
+    button_cancel_background_fill='#ffffff',
+    button_cancel_background_fill_hover='#ebc03f',
+    button_cancel_border_color='#eeeeee',
+    button_cancel_border_color_hover='#ebc03f',
+    checkbox_background_color='#ffffff',
+    checkbox_border_color='#f5df9f',
+    input_background_fill='#ffffff',
+    input_border_color='#eeeeee',
+    input_border_width='1px',
+    slider_color='#f5df9f',
+    table_odd_background_fill='#f3efe5',
 )
 
 

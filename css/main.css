@@ -96,8 +96,8 @@ div.svelte-15lo0d8 > *, div.svelte-15lo0d8 > .form > * {
 }
 
 .header_bar {
-    background-color: #f7f7f7;
-    margin-bottom: 20px;
+    background-color: #1d1f22;
+    margin-bottom: 5px;
     display: inline !important;
     overflow-x: scroll;
 }
@@ -192,4 +192,18 @@ button {
 
 .dark .pretty_scrollbar::-webkit-resizer {
   background: #374151;
+}
+.header_bar button{
+    border: 1px solid transparent;
+    border-color: transparent;
+    border-left: 1px solid #343538;
+    border-bottom: none;
+    border-radius: unset;
+    padding: 20px;
+    color: #ffffff;
+}
+.header_bar button:hover{
+    color: #1e293b;
+    background-color: #f3efe5;
+    border-color:#f3efe5
 }
