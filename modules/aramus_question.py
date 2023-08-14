@@ -48,8 +48,8 @@ class Aramus_question:
         print("request,question:", question)
 
         # send url
-        #url = 'http://192.168.0.175:3030/translate/NLLB'
-        url = 'http://37.224.68.132:26030/translate/NLLB'
+        url = 'http://192.168.0.175:3030/translate/NLLB'
+        #url = 'http://37.224.68.132:26030/translate/NLLB'
         headers = {
             'Content-Type': 'application/json',
         }
