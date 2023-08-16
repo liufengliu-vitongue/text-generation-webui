@@ -105,7 +105,10 @@ bitsandbytes >= 0.39 may not work on older NVIDIA GPUs. In that case, to use `--
 ln -s docker/{Dockerfile,docker-compose.yml,.dockerignore} .
 cp docker/.env.example .env
 # Edit .env and set TORCH_CUDA_ARCH_LIST based on your GPU model
-docker compose up --build
+# Start with build first
+docker compose up --build -d
+# Restart
+docker compose restart
 ```
 
 * You need to have docker compose v2.17 or higher installed. See [this guide](https://github.com/oobabooga/text-generation-webui/blob/main/docs/Docker.md) for instructions.
