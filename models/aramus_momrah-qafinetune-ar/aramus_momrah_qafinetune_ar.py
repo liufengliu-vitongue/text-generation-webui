@@ -22,8 +22,8 @@ class AramusModel(object):
         new_question_en = Aramus_question.translate_language(new_question, "ar")
 
         # send url
-        url = 'http://192.168.0.16:3334/QApairs'
-        #url = "http://37.224.68.132:24334/QApairs"
+        url = 'http://192.168.0.16:3335/QApairs'
+        #url = "http://37.224.68.132:24335/QApairs"
         headers = {
             'Content-Type': 'application/json',
         }
