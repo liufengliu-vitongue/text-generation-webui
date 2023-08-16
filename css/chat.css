@@ -144,3 +144,7 @@ div.svelte-362y77>*, div.svelte-362y77>.form>* {
     direction: unset;
     unicode-bidi: plaintext;
 }
+textarea{
+    direction: unset;
+    unicode-bidi: plaintext;
+}
