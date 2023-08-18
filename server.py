@@ -766,34 +766,34 @@ def create_interface():
             shared.gradio['interface_state'] = gr.State({k: None for k in shared.input_elements})
             shared.gradio['last_input'] = gr.State('')
             with gr.Tab("Text generation", elem_id="main"):
-                with gr.Row():
-                    with gr.Column():
-                        shared.gradio['textbox'] = gr.Textbox(value=default_text, elem_classes=['textbox_default', 'add_scrollbar'], lines=27, label='Input')
-                        shared.gradio['max_new_tokens'] = gr.Slider(minimum=shared.settings['max_new_tokens_min'], maximum=shared.settings['max_new_tokens_max'], step=1, label='max_new_tokens', value=shared.settings['max_new_tokens'])
-                        with gr.Row():
-                            shared.gradio['Generate'] = gr.Button('Generate', variant='primary')
-                            shared.gradio['Stop'] = gr.Button('Stop')
-                            shared.gradio['Continue'] = gr.Button('Continue')
-                            shared.gradio['count_tokens'] = gr.Button('Count tokens')
+                
+                with gr.Column():
+                    shared.gradio['textbox'] = gr.Textbox(value=default_text, elem_classes=['textbox_default', 'add_scrollbar'], lines=27, label='Input')
+                    shared.gradio['max_new_tokens'] = gr.Slider(minimum=shared.settings['max_new_tokens_min'], maximum=shared.settings['max_new_tokens_max'], step=1, label='max_new_tokens', value=shared.settings['max_new_tokens'])
+                    with gr.Row():
+                        shared.gradio['Generate'] = gr.Button('Generate', variant='primary')
+                        shared.gradio['Stop'] = gr.Button('Stop')
+                        shared.gradio['Continue'] = gr.Button('Continue')
+                        shared.gradio['count_tokens'] = gr.Button('Count tokens')
 
-                        with gr.Row():
-                            shared.gradio['prompt_menu'] = gr.Dropdown(choices=utils.get_available_prompts(), value='None', label='Prompt', elem_classes='slim-dropdown')
-                            ui.create_refresh_button(shared.gradio['prompt_menu'], lambda: None, lambda: {'choices': utils.get_available_prompts()}, 'refresh-button')
-                            shared.gradio['save_prompt'] = gr.Button('💾', elem_classes='refresh-button')
-                            shared.gradio['delete_prompt'] = gr.Button('🗑️', elem_classes='refresh-button')
+                    with gr.Row():
+                        shared.gradio['prompt_menu'] = gr.Dropdown(choices=utils.get_available_prompts(), value='None', label='Prompt', elem_classes='slim-dropdown')
+                        ui.create_refresh_button(shared.gradio['prompt_menu'], lambda: None, lambda: {'choices': utils.get_available_prompts()}, 'refresh-button')
+                        shared.gradio['save_prompt'] = gr.Button('💾', elem_classes='refresh-button')
+                        shared.gradio['delete_prompt'] = gr.Button('🗑️', elem_classes='refresh-button')
 
-                        shared.gradio['status'] = gr.Markdown('')
+                    shared.gradio['status'] = gr.Markdown('')
 
-                    with gr.Column():
-                        with gr.Tab('Raw'):
-                            shared.gradio['output_textbox'] = gr.Textbox(lines=27, label='Output', elem_classes=['textbox_default_output', 'add_scrollbar'])
+                with gr.Column():
+                    with gr.Tab('Raw'):
+                        shared.gradio['output_textbox'] = gr.Textbox(lines=27, label='Output', elem_classes=['textbox_default_output', 'add_scrollbar'])
 
-                        with gr.Tab('Markdown'):
-                            shared.gradio['markdown_render'] = gr.Button('Render')
-                            shared.gradio['markdown'] = gr.Markdown()
+                    with gr.Tab('Markdown'):
+                        shared.gradio['markdown_render'] = gr.Button('Render')
+                        shared.gradio['markdown'] = gr.Markdown()
 
-                        with gr.Tab('HTML'):
-                            shared.gradio['html'] = gr.HTML()
+                    with gr.Tab('HTML'):
+                        shared.gradio['html'] = gr.HTML()
 
             with gr.Tab("Parameters", elem_id="parameters"):
                 create_settings_menus(default_preset)
