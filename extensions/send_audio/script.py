@@ -52,7 +52,7 @@ def generate_chat_audio(audio, name1, name2):
     # sound.export(file_path, format='mp3')
     visible_text = f'<audio src="data:audio/mpeg;base64,{audio_str}" controls></audio>'
 
-    text = f'*{file_path}*'
+    text = f'{file_path}'
     return text, visible_text
 
 
