@@ -65,5 +65,7 @@ RUN cp /app/venv/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_cuda1
 
 COPY . /app/
 ENV CLI_ARGS=""
-RUN apt-get install ffmpeg
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
 CMD . /app/venv/bin/activate && python3 server.py ${CLI_ARGS}
