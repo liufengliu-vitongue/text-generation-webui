@@ -50,14 +50,14 @@ def generate_chat_audio(audio, name1, name2):
     f.close()
     # audio_str=base64.b64encode(mpegbuffer.getvalue()).decode('utf-8')
     # sound.export(file_path, format='mp3')
-    visible_text = f'<audio src="data:audio/mpeg;base64,{audio_str}" controls></audio>'
+    visible_text = f'<audio src="data:audio/wav;base64,{audio_str}" controls></audio>'
 
     text = f'{file_path}'
     return text, visible_text
 
 
 def ui():
-    audio_select = gr.Audio(label='Send a audio',source="upload",type="filepath",format="mp3")
+    audio_select = gr.Audio(label='Send a audio',source="upload",type="filepath",format="wav")
     # Prepare the input hijack, update the interface values, call the generation function, and clear the audio
     audio_select.upload(
         lambda audio, name1, name2: input_hijack.update({
