@@ -18,7 +18,7 @@ class AramusModel(object):
         print("request,question:", new_question)
 
         # send url
-        url = 'http://192.168.0.111:3767/ask'
+        url = 'http://192.168.0.111:3777/generate'
         #url = "http://37.224.68.132:24767/ask"
         headers = {
             'Content-Type': 'application/json',
