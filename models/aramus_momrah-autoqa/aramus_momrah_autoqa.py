@@ -19,7 +19,7 @@ class AramusModel(object):
 
 
         # send url
-        url = 'http://192.168.0.175:3941/momrah_gpt/visual_pollution_qa'
+        url = 'http://192.168.0.111:3941/momrah_gpt/visual_pollution_qa'
 
         #url = 'http://37.224.68.132:23941/momrah_gpt/visual_pollution_qa'
         headers = {
