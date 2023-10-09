@@ -35,16 +35,16 @@ class AramusModel(object):
             )
 
         # send url
-        url = 'http://192.168.0.111:3767/ask'
-        #url = "http://37.224.68.132:24767/ask"
+        url = 'http://192.168.0.91:3030/aramus_chat'
+        # url = "http://37.224.68.132:27030/aramus_chat"
         headers = {
             'Content-Type': 'application/json',
         }
         
         data = {
-                    'user_input': new_question,
+                    'chat_input': new_question,
                     'messages': messages_body,
-                    'info':{}
+                    'user_info':{}
                 }
         print("request data:",data)
 
