@@ -35,8 +35,8 @@ class AramusModel(object):
             )
 
         # send url
-        url = 'http://192.168.0.91:3030/aramus_chat'
-        # url = "http://37.224.68.132:27030/aramus_chat"
+        url = 'http://192.168.0.91:3006/aramus_chat'
+        # url = "http://37.224.68.132:27006/aramus_chat"
         headers = {
             'Content-Type': 'application/json',
         }
